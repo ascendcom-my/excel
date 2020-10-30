@@ -19,7 +19,7 @@
     @if(session('message'))
     <span class="px-5 @if(session('error')) text-red @endif">{{ session('message') }}</span>
     @endif
-    @if ($errors->any())
+    @if (isset($errors) && $errors->any())
       @foreach ($errors->all() as $error)
       <span class="px-5 text-red">{{ $error }}</span>
       @endforeach
