@@ -2,6 +2,8 @@
 
 return [
 
+    'database' => config('database.connections.'.config('database.default').'.database'),
+
     'tables' => [
         'asset_templates' => [
             'model' => Bigmom\Excel\Models\AssetTemplate::class,

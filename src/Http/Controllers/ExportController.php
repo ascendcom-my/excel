@@ -17,7 +17,7 @@ class ExportController extends Controller
         $tables = DB::select('SHOW TABLES');
         if ($this->resolveLimitConfig('should-limit')) {
             foreach ($tables as $index => $table) {
-                if (!in_array($table->Tables_in_laravel, $this->resolveLimitConfig('allowed-tables'))) {
+                if (!in_array($table->{'Tables_in_'.config('excel.database')}, $this->resolveLimitConfig('allowed-tables'))) {
                     unset($tables[$index]);
                 }
             }
@@ -40,7 +40,7 @@ class ExportController extends Controller
         } else {
             $allowedTables = DB::select('SHOW TABLES');
             foreach ($allowedTables as $index => $table) {
-                $allowedTables[$index] = $table->Tables_in_laravel;
+                $allowedTables[$index] = $table->{'Tables_in_'.config('excel.database')};
             }
             $allowedTables = implode(',', $allowedTables);
         }

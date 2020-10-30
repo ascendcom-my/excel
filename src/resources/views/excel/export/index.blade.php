@@ -15,9 +15,9 @@
       <div class="w-full flex flex-wrap">
         @forelse($tables as $table)
         <div class="w-1/4 px-2 py-2 border-solid border-2 border-gray-400">
-          <label for="checkbox-{{ $table->Tables_in_laravel }}" class="text-black font-bold flex justify-between ">
-            <span>{{ $table->Tables_in_laravel }}</span>
-            <input id="checkbox-{{ $table->Tables_in_laravel }}" type="checkbox" name="table[]" value="{{ $table->Tables_in_laravel }}" class="mr-2 leading-tight">
+          <label for="checkbox-{{ $table->{'Tables_in_'.config('excel.database')} }}" class="text-black font-bold flex justify-between ">
+            <span>{{ $table->{'Tables_in_'.config('excel.database')} }}</span>
+            <input id="checkbox-{{ $table->{'Tables_in_'.config('excel.database')} }}" type="checkbox" name="table[]" value="{{ $table->{'Tables_in_'.config('excel.database')} }}" class="mr-2 leading-tight">
           </label>
         </div>
         @empty
