@@ -23,14 +23,14 @@ class ExportController extends Controller
             }
             $tables = array_values($tables);
         }
-        return view('excel.export.index', compact('tables'));
+        return view('excel::excel.export.index', compact('tables'));
     }
 
     public function getAdminIndex()
     {
         $tables = DB::select('SHOW TABLES');
 
-        return view('excel.export.index', compact('tables'));
+        return view('excel::excel.export.index', compact('tables'));
     }
 
     public function download(Request $request)

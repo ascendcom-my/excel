@@ -9,7 +9,7 @@ class ImportController extends Controller
 {
     public function getIndex()
     {
-        return view('excel.import.index');
+        return view('excel::excel.import.index');
     }
 
     public function postImport(Request $request)
@@ -29,7 +29,7 @@ class ImportController extends Controller
 
         $data = collect($data);
 
-        return view('excel.import.confirm', compact('data'));
+        return view('excel::excel.import.confirm', compact('data'));
     }
 
     public function postConfirmImport(Request $request)
