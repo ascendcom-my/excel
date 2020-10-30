@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-excel::layout>
   <x-slot name="title">
     Excel Export - {{ config('app.name', 'Laravel') }}
   </x-slot>
@@ -48,4 +48,4 @@
       });
     }
   </script>
-</x-app-layout>
+</x-excel::layout>

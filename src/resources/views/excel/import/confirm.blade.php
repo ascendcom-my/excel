@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-excel::layout>
     <x-slot name="title">
       Excel Import - {{ config('app.name', 'Laravel') }}
     </x-slot>
@@ -29,4 +29,4 @@
       <span class="px-5 text-red">{{ $error }}</span>
       @endforeach
     @endif
-  </x-app-layout>
+  </x-excel::layout>
