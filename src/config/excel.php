@@ -46,24 +46,5 @@ return [
     'export' => [
         'title' => config('app.name') . '_Tables',
     ],
-    
-    'restrict-usage' => false,
-    
-    'allowed-users' => [
-        'admin' => [
-            'admin@mail.io',
-        ],
-        'export' => [
-            //'commoner@mail.io',
-        ],
-        'import' => [
-            //'pleb@mail.io',
-        ],
-    ],
-
-    'guard' => [
-        // 'driver' => 'session',
-        // 'provider' => 'users',
-    ],
 
 ];
