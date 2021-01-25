@@ -6,7 +6,7 @@ Import/Export tables from database in .xlsx files.
 
 ## Installation
 
-- `composer require bigmom/hook`
+- `composer require bigmom/excel`
 - `php artisan vendor:publish`
 - `php artisan migrate`
 
