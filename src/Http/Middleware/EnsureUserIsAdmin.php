@@ -2,10 +2,10 @@
 
 namespace Bigmom\Excel\Http\Middleware;
 
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Bigmom\Auth\Facades\Permission;
 
 class EnsureUserIsAdmin
 {
@@ -18,13 +18,10 @@ class EnsureUserIsAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (config('excel.restrict-usage')) {
-            $allowed = app()->environment('local')
-                || Gate::forUser(Auth::guard('excel')->user())->allows('excel-admin');
-
-            abort_unless($allowed, 403);
+        if (Permission::allows(Auth::guard('bigmom')->user(), 'excel-admin')) {
+            return $next($request);
+        } else {
+            abort(403, "User is not authorized to access this link. Are you sure you are accessing the correct link?");
         }
-
-        return $next($request);
     }
 }

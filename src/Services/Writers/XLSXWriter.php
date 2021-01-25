@@ -39,7 +39,7 @@ class XLSXWriter
             if ($model = $this->resolveTableConfig($tableName, 'model')) {
                 $data = $model::get();
                 foreach ($headers as $header_index => $header) {
-                    if (array_key_exists($header, $accessor = $this->resolveTableConfig($tableName, 'accessor'))) {
+                    if (array_key_exists($header, $accessor = $this->resolveTableConfig($tableName, 'accessor', []))) {
                         array_splice($headers, $header_index, 1, $accessor[$header]);
                     }
                 }

@@ -9,7 +9,7 @@ class ImportController extends Controller
 {
     public function getIndex()
     {
-        return view('excel::excel.import.index');
+        return view('bigmom-excel::excel.import.index');
     }
 
     public function postImport(Request $request)
@@ -29,7 +29,7 @@ class ImportController extends Controller
 
         $data = collect($data);
 
-        return view('excel::excel.import.confirm', compact('data'));
+        return view('bigmom-excel::excel.import.confirm', compact('data'));
     }
 
     public function postConfirmImport(Request $request)
@@ -44,12 +44,12 @@ class ImportController extends Controller
 
         if ($result) {
             return redirect()
-                ->route('excel.import.getIndex')
+                ->route('bigmom-excel.import.getIndex')
                 ->with('success', 'success')
                 ->with('message', 'Import successful.');
         } else {
             return redirect()
-                ->route('excel.import.getIndex')
+                ->route('bigmom-excel.import.getIndex')
                 ->with('error', 'error')
                 ->with('message', 'File contains invalid tables.');
         }

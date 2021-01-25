@@ -2,11 +2,14 @@
 
 namespace Bigmom\Excel\Traits;
 
+use Bigmom\Auth\Facades\Permission;
+use Illuminate\Support\Facades\Auth;
+
 trait ResolveConfig
 {
-    public function resolveTableConfig($tableName, $config)
+    public function resolveTableConfig($tableName, $config, $default = null)
     {
-        return config("excel.tables.$tableName.$config");
+        return config("excel.tables.$tableName.$config", $default);
     }
 
     public function resolveLimitConfig($config)
@@ -16,7 +19,7 @@ trait ResolveConfig
 
     public function checkIfTableIsAllowed($tableName)
     {
-        if (!\Gate::forUser(\Auth::guard('excel')->user())->allows('excel-admin') && $this->resolveLimitConfig('should-limit')) {
+        if (!Permission::allows(Auth::guard('bigmom')->user(), 'excel-admin') && $this->resolveLimitConfig('should-limit')) {
             return in_array($tableName, $this->resolveLimitConfig('allowed-tables'));
         } else {
             return true;

@@ -2,9 +2,11 @@
 
 namespace Bigmom\Excel\Http\Controllers;
 
+use Bigmom\Auth\Facades\Permission;
 use Bigmom\Excel\Facades\Export\XLSX;
 use Bigmom\Excel\Traits\ResolveConfig;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,19 +25,19 @@ class ExportController extends Controller
             }
             $tables = array_values($tables);
         }
-        return view('excel::excel.export.index', compact('tables'));
+        return view('bigmom-excel::excel.export.index', compact('tables'));
     }
 
     public function getAdminIndex()
     {
         $tables = DB::select('SHOW TABLES');
 
-        return view('excel::excel.export.index', compact('tables'));
+        return view('bigmom-excel::excel.export.index', compact('tables'));
     }
 
     public function download(Request $request)
     {
-        if (!\Gate::forUser(\Auth::guard('excel')->user())->allows('excel-admin') && $this->resolveLimitConfig('should-limit')) {
+        if (!Permission::allows(Auth::guard('bigmom')->user(), 'excel-admin') && $this->resolveLimitConfig('should-limit')) {
             $allowedTables = implode(',', $this->resolveLimitConfig('allowed-tables'));
         } else {
             $allowedTables = DB::select('SHOW TABLES');

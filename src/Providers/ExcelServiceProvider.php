@@ -18,11 +18,41 @@ class ExcelServiceProvider extends ServiceProvider
     public function register()
     {
         config([
-            'auth.guards.excel' => array_merge([
-                'driver' => config('excel.guard.driver', 'session'),
-                'provider' => config('excel.guard.provider', 'users'),
-            ], config('auth.guards.excel', [])),
+            'bigmom-auth.packages' => array_merge([[
+                'name' => 'Excel',
+                'description' => 'Import/Export excel files from database.',
+                'routes' => [
+                    [
+                        'title' => 'Import',
+                        'name' => 'bigmom-excel.import.getIndex',
+                        'permission' => 'excel-admin||excel-import',
+                    ],
+                    [
+                        'title' => 'Export',
+                        'name' => 'bigmom-excel.export.getIndex',
+                        'permission' => 'excel-admin||excel-export',
+                    ],
+                    [
+                        'title' => 'Admin Export',
+                        'name' => 'bigmom-excel.export.getAdminIndex',
+                        'permission' => 'excel-admin',
+                    ],
+                ],
+                'permissions' => [
+                    'excel-admin',
+                    'excel-import',
+                    'excel-export',
+                ]
+            ]], config('bigmom-auth.packages', []))
         ]);
+
+        $this->app->singleton('excel.export.xlsx', function ($app) {
+            return new XLSXWriter;
+        });
+
+        $this->app->singleton('excel.import.xlsx', function ($app) {
+            return new XLSXReader;
+        });
     }
 
     /**
@@ -32,46 +62,18 @@ class ExcelServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__.'/../config/excel.php' => config_path('excel.php'),
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/excel.php' => config_path('excel.php'),
+            ]);
+
+            $this->publishes([
+                __DIR__.'/../public' => public_path('vendor/excel'),
+            ], 'public');
+        }
 
         $this->loadRoutesFrom(__DIR__.'/../routes.php');
 
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'excel');
-
-        $this->publishes([
-            __DIR__.'/../public' => public_path('vendor/excel'),
-        ], 'public');
-
-        $this->app->singleton('excel.export.xlsx', function ($app) {
-            return new XLSXWriter;
-        });
-
-        $this->app->singleton('excel.import.xlsx', function ($app) {
-            return new XLSXReader;
-        });
-
-        $this->gate();
-    }
-
-    /**
-     * Register the Hook UI gate.
-     *
-     * This gate determines who can access VE Editor in non-local environments.
-     *
-     * @return void
-     */
-    protected function gate()
-    {
-        Gate::define('excel-admin', function ($user = null) {
-            return in_array(optional($user)->email, config('excel.allowed-users.admin'));
-        });
-        Gate::define('excel-export', function ($user = null) {
-            return in_array(optional($user)->email, config('excel.allowed-users.export'));
-        });
-        Gate::define('excel-import', function ($user = null) {
-            return in_array(optional($user)->email, config('excel.allowed-users.import'));
-        });
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'bigmom-excel');
     }
 }

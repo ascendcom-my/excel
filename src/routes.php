@@ -5,9 +5,10 @@ use Bigmom\Excel\Http\Controllers\ImportController;
 use Bigmom\Excel\Http\Middleware\EnsureUserIsAdmin;
 use Bigmom\Excel\Http\Middleware\EnsureUserIsExportAuthorized;
 use Bigmom\Excel\Http\Middleware\EnsureUserIsImportAuthorized;
+use Bigmom\Auth\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('excel')->name('excel.')->middleware(['auth.basic:excel'])->group(function () {
+Route::prefix('bigmom/excel')->name('bigmom-excel.')->middleware(['web', Authenticate::class])->group(function () {
     Route::prefix('import')->name('import.')->middleware([EnsureUserIsImportAuthorized::class])->group(function () {
         Route::get('/', [ImportController::class, 'getIndex'])->name('getIndex');
         Route::post('/post', [ImportController::class, 'postImport'])->name('postImport');
