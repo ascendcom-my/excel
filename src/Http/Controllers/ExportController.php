@@ -54,6 +54,8 @@ class ExportController extends Controller
         
         $filePath = XLSX::write($request->input('table'));
 
-        return Storage::download($filePath);
+        return Storage::download($filePath, null, [
+            'X-Vapor-Base64-Encode' => 'True',
+        ]);
     }
 }
