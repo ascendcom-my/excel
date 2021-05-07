@@ -8,7 +8,7 @@ use Bigmom\Excel\Traits\ResolveConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ExportController extends Controller
 {
@@ -52,10 +52,13 @@ class ExportController extends Controller
             'table.*' => "required|string|max:191|in:$allowedTables",
         ]);
         
-        $filePath = XLSX::write($request->input('table'));
+        $writer = XLSX::write($request->input('table'));
 
-        return Storage::download($filePath, null, [
-            'X-Vapor-Base64-Encode' => 'True',
+        return new StreamedResponse(function () use ($writer) {
+            $writer->save('php://output');
+        }, 200, [
+            'Content-Type' => 'application/vnd.ms-excel',
+            'Content-Disposition' => "attachment;",
         ]);
     }
 }

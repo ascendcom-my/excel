@@ -77,15 +77,7 @@ class XLSXWriter
 
         $writer = new Xlsx($spreadsheet);
         $writer->setOffice2003Compatibility(true);
-        if (!file_exists(base_path('storage/app/excel/'))) {
-            mkdir(base_path('storage/app/excel/'));
-        }
-        if (!file_exists(base_path('storage/app/excel/export'))) {
-            mkdir(base_path('storage/app/excel/export'));
-        }
-        $filePath = 'excel/export/'.config('excel.export.title').'_'.\Carbon\Carbon::now()->format('Y-m-d_his').'.xlsx';
-        $writer->save(base_path("storage/app/$filePath"));
 
-        return $filePath;
+        return $writer;
     }
 }
